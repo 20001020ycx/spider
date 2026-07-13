@@ -10,3 +10,6 @@ build
 # IDE-related directories and files
 .idea
 cmake-build-debug
+
+# Helm chart dependencies (fetched via `helm dependency build`)
+/tools/deployment/spider-helm/charts/

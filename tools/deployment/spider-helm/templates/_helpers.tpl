@@ -99,31 +99,76 @@ failureThreshold: 3
 {{- end }}
 
 {{/*
-Gets the database host. When "database" is bundled, this is the in-cluster MariaDB Service; when not
-bundled, it is the external `spiderConfig.database.host`.
+Gets the database host. When the bundled MariaDB subchart is enabled, this is its primary Service
+(`<release>-mariadb`); otherwise it is the external `spiderConfig.database.host`.
 
 @param {object} . Root template context
 @return {string} The database host
 */}}
 {{- define "spider.databaseHost" -}}
-{{- if has "database" .Values.spiderConfig.bundled -}}
-{{- printf "%s-database" (include "spider.fullname" .) -}}
+{{- if .Values.mariadb.enabled -}}
+{{- printf "%s-mariadb" .Release.Name -}}
 {{- else -}}
 {{- .Values.spiderConfig.database.host -}}
 {{- end -}}
 {{- end }}
 
 {{/*
-Gets the database port. When "database" is bundled, this is 3306 (the bundled MariaDB's port);
-otherwise it is the external `spiderConfig.database.port`.
+Gets the database port. When the bundled MariaDB subchart is enabled, this is 3306; otherwise it is
+the external `spiderConfig.database.port`.
 
 @param {object} . Root template context
 @return {string} The database port
 */}}
 {{- define "spider.databasePort" -}}
-{{- if has "database" .Values.spiderConfig.bundled -}}
+{{- if .Values.mariadb.enabled -}}
 3306
 {{- else -}}
 {{- .Values.spiderConfig.database.port -}}
+{{- end -}}
+{{- end }}
+
+{{/*
+Gets the database name. From the subchart's `mariadb.userDatabase.name.value` when bundled, else from
+`spiderConfig.database.name`.
+
+@param {object} . Root template context
+@return {string} The database name
+*/}}
+{{- define "spider.databaseName" -}}
+{{- if .Values.mariadb.enabled -}}
+{{- .Values.mariadb.userDatabase.name.value -}}
+{{- else -}}
+{{- .Values.spiderConfig.database.name -}}
+{{- end -}}
+{{- end }}
+
+{{/*
+Gets the database username. From the subchart's `mariadb.userDatabase.user.value` when bundled, else
+from `spiderConfig.database.username`.
+
+@param {object} . Root template context
+@return {string} The database username
+*/}}
+{{- define "spider.databaseUser" -}}
+{{- if .Values.mariadb.enabled -}}
+{{- .Values.mariadb.userDatabase.user.value -}}
+{{- else -}}
+{{- .Values.spiderConfig.database.username -}}
+{{- end -}}
+{{- end }}
+
+{{/*
+Gets the database password. From the subchart's `mariadb.userDatabase.password.value` when bundled,
+else from `spiderConfig.database.password`.
+
+@param {object} . Root template context
+@return {string} The database password
+*/}}
+{{- define "spider.databasePassword" -}}
+{{- if .Values.mariadb.enabled -}}
+{{- .Values.mariadb.userDatabase.password.value -}}
+{{- else -}}
+{{- .Values.spiderConfig.database.password -}}
 {{- end -}}
 {{- end }}

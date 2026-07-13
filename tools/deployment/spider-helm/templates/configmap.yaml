@@ -12,9 +12,9 @@ data:
       db_config:
         host: {{ include "spider.databaseHost" . | quote }}
         port: {{ include "spider.databasePort" . }}
-        name: {{ .Values.spiderConfig.database.name | quote }}
-        username: {{ .Values.spiderConfig.database.username | quote }}
-        password: {{ .Values.spiderConfig.database.password | quote }}
+        name: {{ include "spider.databaseName" . | quote }}
+        username: {{ include "spider.databaseUser" . | quote }}
+        password: {{ include "spider.databasePassword" . | quote }}
         max_connections: {{ .Values.spiderConfig.storage.max_connections }}
       {{- with omit .Values.spiderConfig.storage "max_connections" }}
       {{- toYaml . | nindent 6 }}
