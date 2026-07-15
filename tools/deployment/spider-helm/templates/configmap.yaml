@@ -17,3 +17,18 @@ data:
       {{- with omit .Values.spiderConfig.storage "max_connections" }}
       {{- toYaml . | nindent 6 }}
       {{- end }}
+  scheduler.yaml: |
+    runtime:
+      host: "__SCHEDULER_HOST__"
+      port: {{ .Values.spiderConfig.scheduler_endpoint.port }}
+      {{- $scheduler := .Values.spiderConfig.scheduler.runtime.scheduler }}
+      {{- $algorithm := keys $scheduler | first }}
+      scheduler: !{{ $algorithm }}
+        {{- toYaml (index $scheduler $algorithm) | nindent 8 }}
+      {{- with omit .Values.spiderConfig.scheduler.runtime "scheduler" }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
+    storage_connection_pool_size: {{ .Values.spiderConfig.scheduler.storage_connection_pool_size }}
+    storage_endpoint:
+      host: "__STORAGE_HOST__"
+      port: {{ .Values.spiderConfig.storage_endpoint.port }}
