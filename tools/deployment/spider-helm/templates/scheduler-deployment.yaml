@@ -40,7 +40,7 @@ spec:
                 /etc/spider/template/scheduler.yaml > /etc/spider/scheduler.yaml
           env:
             - name: "STORAGE_HOST"
-              value: {{ include "spider.storageHost" . | quote }}
+              value: {{ include "spider.componentFullname" (dict "root" . "component" "storage") | quote }}
             - name: "SCHEDULER_HOST"
               valueFrom:
                 fieldRef:

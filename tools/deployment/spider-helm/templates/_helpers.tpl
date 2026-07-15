@@ -117,16 +117,6 @@ failureThreshold: 3
 {{- end }}
 
 {{/*
-Gets the storage Service host (always bundled as a core Spider component).
-
-@param {object} . Root template context
-@return {string} The storage Service DNS name
-*/}}
-{{- define "spider.storageHost" -}}
-{{- include "spider.componentFullname" (dict "root" . "component" "storage") -}}
-{{- end }}
-
-{{/*
 Gets the bundled database Service host or external `spiderConfig.database.host`.
 
 @param {object} . Root template context
