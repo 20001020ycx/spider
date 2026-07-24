@@ -75,5 +75,11 @@ spiderConfig:
         task_capacity: 1048576
 
   worker:
-    extra_envs: {}
+    # Additional environment variables for the worker container, as raw EnvVar objects (supports
+    # `value` and `valueFrom`).
+    extra_envs: []
+    # Additional volume mounts for the worker container, as raw VolumeMount objects.
+    extra_volume_mounts: []
+    # Additional volumes for the worker pod, as raw Volume objects.
+    extra_volumes: []
     replicas: 4
